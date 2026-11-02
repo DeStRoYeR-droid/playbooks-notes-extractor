@@ -1,0 +1,446 @@
+/* ==========================================================================
+   Play Books Notes: styles
+   1. Fonts      2. Tokens (light / dark)   3. Base       4. Layout
+   5. Header     6. Hero + upload           7. Result     8. Preview
+   9. Buttons    10. States                 11. Footer + 404
+   Breakpoints (mobile first): tablet 40em (640px), desktop 64em (1024px),
+   large 90em (1440px).
+   ========================================================================== */
+
+/* 1. Fonts: self-hosted, SIL Open Font License (see /fonts). ------------- */
+@font-face {
+  font-family: "Belgrano";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/belgrano-latin-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Google Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("../fonts/google-sans-latin-wght.woff2") format("woff2-variations"),
+       url("../fonts/google-sans-latin-wght.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Google Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("../fonts/google-sans-latin-ext-wght.woff2") format("woff2-variations"),
+       url("../fonts/google-sans-latin-ext-wght.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* 2. Tokens --------------------------------------------------------------
+   Light: colorhunt EDE9E6 / C9996B / 5C4F4A / 5C766D.
+   Dark:  colorhunt 321E48 / 43637E / 65DCD5 / D9FFF4.
+   Shades marked "derived" exist only to reach WCAG AA contrast. */
+:root {
+  --linen: #ede9e6;
+  --tan: #c9996b;
+  --umber: #5c4f4a;
+  --sage: #5c766d;
+
+  --bg: var(--linen);
+  --surface: #f7f4f2;             /* derived: lighter linen */
+  --surface-sunk: #e4dfdb;        /* derived: preview well */
+  --text: var(--umber);           /* 6.5:1 on bg */
+  --text-muted: #4e665e;          /* derived darker sage, 5.1:1 */
+  --rule: #d6ccc4;
+  --border-strong: var(--sage);   /* 4.1:1, UI boundaries */
+  --accent: var(--tan);           /* decorative only */
+  --accent-soft: rgba(201, 153, 107, 0.16);
+  --focus: var(--sage);
+  --btn-bg: var(--umber);
+  --btn-text: #f7f4f2;
+  --btn-hover: #4a3f3b;
+  --selected-bg: #4e665e;
+  --selected-text: #f7f4f2;
+  --error: #9b3a23;               /* derived, 5.6:1 */
+  --error-bg: #f6e3dc;
+  --notice-bg: #e8ece6;
+
+  /* Highlight swatches exactly as Play Books exports them (data, not decoration). */
+  --hl-yellow: #fbc02d;
+  --hl-green: #8bc34a;
+  --hl-blue: #26c6da;
+  --hl-red: #ff7043;
+  --hl-unknown: #9aa5ae;
+
+  --display: "Belgrano", Georgia, "Times New Roman", serif;
+  --sans: "Google Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+  --step--1: 0.875rem;   /* 14 */
+  --step-0: 1rem;        /* 16 */
+  --step-1: 1.125rem;    /* 18 */
+  --step-2: 1.3125rem;   /* 21 */
+  --step-3: 1.5rem;      /* 24 */
+  --step-4: 2.25rem;     /* 36 */
+  --step-5: 3rem;        /* 48 */
+  --step-6: 3.75rem;     /* 60 */
+
+  --radius: 10px;
+  --gutter: 1.25rem;
+  --max: 72rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #321e48;
+    --surface: #3d2856;           /* derived */
+    --surface-sunk: #28173b;      /* derived */
+    --text: #d9fff4;              /* 13.8:1 */
+    --text-muted: #a8c4d6;        /* derived lighter slate, 8.1:1 */
+    --rule: #43637e;
+    --border-strong: #65dcd5;
+    --accent: #65dcd5;
+    --accent-soft: rgba(101, 220, 213, 0.12);
+    --focus: #65dcd5;
+    --btn-bg: #65dcd5;
+    --btn-text: #321e48;          /* 9.0:1 */
+    --btn-hover: #8ae6e0;
+    --selected-bg: #65dcd5;
+    --selected-text: #321e48;
+    --error: #ffb4a2;
+    --error-bg: #4a2440;
+    --notice-bg: #2c3a55;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #321e48;
+  --surface: #3d2856;
+  --surface-sunk: #28173b;
+  --text: #d9fff4;
+  --text-muted: #a8c4d6;
+  --rule: #43637e;
+  --border-strong: #65dcd5;
+  --accent: #65dcd5;
+  --accent-soft: rgba(101, 220, 213, 0.12);
+  --focus: #65dcd5;
+  --btn-bg: #65dcd5;
+  --btn-text: #321e48;
+  --btn-hover: #8ae6e0;
+  --selected-bg: #65dcd5;
+  --selected-text: #321e48;
+  --error: #ffb4a2;
+  --error-bg: #4a2440;
+  --notice-bg: #2c3a55;
+  color-scheme: dark;
+}
+
+/* 3. Base ---------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 5rem; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 var(--step-1) / 1.6 var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+main { flex: 1 0 auto; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.15; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { text-decoration-color: var(--accent); }
+code { font: 0.9em var(--mono); }
+img, svg { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+/* Headings that receive focus programmatically (to announce new content) aren't controls. */
+[tabindex="-1"]:focus { outline: none; }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: 1rem; top: -4rem; z-index: 10;
+  padding: 0.6rem 1rem; border-radius: 8px;
+  background: var(--btn-bg); color: var(--btn-text); font-weight: 700; text-decoration: none;
+}
+.skip-link:focus { top: 1rem; }
+
+/* 4. Layout -------------------------------------------------------------- */
+.wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+
+/* 5. Header -------------------------------------------------------------- */
+.site-header { border-bottom: 1px solid var(--rule); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; min-height: 4rem; }
+.brand {
+  display: inline-flex; align-items: center; gap: 0.6rem; white-space: nowrap;
+  font-family: var(--display); font-size: var(--step-1); text-decoration: none;
+}
+.brand-tile { fill: var(--umber); }
+:root[data-theme="dark"] .brand-tile { fill: #43637e; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand-tile { fill: #43637e; } }
+.nav-list { display: flex; align-items: center; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+.nav-link {
+  display: inline-block; padding: 0.5rem 0.6rem; border-radius: 8px; white-space: nowrap;
+  font-size: var(--step-0); text-decoration: none; color: var(--text-muted);
+}
+.nav-link:hover { color: var(--text); background: var(--accent-soft); }
+.nav-coffee { display: inline-flex; align-items: center; gap: 0.4rem; }
+.nav-coffee .icon { flex: none; }
+.brand-mark, .theme-toggle { flex: none; }
+.nav-list li { flex: none; }
+/* Narrow phones: the brand shows its mark only (the link keeps "Play Books Notes"
+   as its accessible name). */
+@media (max-width: 29.99em) {
+  .brand-text {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  .nav-list { gap: 0.25rem; }
+}
+/* Phones: icon only (the link keeps its full accessible name). */
+@media (max-width: 39.99em) {
+  .nav-coffee { padding-inline: 0.5rem; }
+  .nav-coffee-text {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+}
+.nav-link[aria-current] { color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+.theme-toggle {
+  display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem;
+  border: 1px solid var(--rule); border-radius: 50%;
+  background: transparent; color: var(--text); cursor: pointer;
+}
+.theme-toggle:hover { background: var(--accent-soft); border-color: var(--border-strong); }
+.icon-sun { display: none; }
+:root[data-theme="dark"] .icon-sun { display: block; }
+:root[data-theme="dark"] .icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .icon-sun { display: block; }
+  :root:not([data-theme="light"]) .icon-moon { display: none; }
+}
+
+/* 6. Hero + upload ------------------------------------------------------- */
+/* The hero fills the first screen (minus the 4rem header and its 1px border), so
+   "How it works" starts one scroll down. Taller hero content simply grows. */
+.hero {
+  display: grid; gap: 2.5rem; padding-block: 2.5rem 3rem; align-content: center;
+  min-height: calc(100vh - 4rem - 1px);
+  min-height: calc(100svh - 4rem - 1px);
+}
+.hero-copy h1 { font-size: clamp(2.25rem, 1.6rem + 2.8vw, var(--step-6)); max-width: 14em; letter-spacing: -0.005em; }
+.lede { margin-top: 1.25rem; font-size: var(--step-1); color: var(--text-muted); max-width: 36em; }
+.steps { margin: 1.75rem 0 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 0.9rem; max-width: 36em; }
+.steps li { counter-increment: step; position: relative; padding-left: 2.6rem; font-size: var(--step-0); }
+.steps li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 0.05rem;
+  display: grid; place-items: center; width: 1.75rem; height: 1.75rem;
+  border-radius: 50%; border: 1px solid var(--border-strong);
+  font-size: var(--step--1); font-weight: 700; color: var(--text);
+}
+.steps strong { font-weight: 700; }
+
+.dropzone {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  gap: 0.6rem;
+  min-height: 19rem;
+  padding: 2rem 1.25rem;
+  border: 2px dashed var(--accent);
+  border-radius: 16px;
+  background: var(--surface);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.drop-icon { color: var(--text-muted); margin-bottom: 0.25rem; }
+.drop-title { font-family: var(--display); font-size: var(--step-3); line-height: 1.25; }
+.drop-or { color: var(--text-muted); font-size: var(--step-0); }
+.drop-hint { color: var(--text-muted); font-size: var(--step--1); max-width: 26em; }
+.dropzone.is-dragging { border-style: solid; border-color: var(--border-strong); background: var(--accent-soft); }
+.dropzone[data-state="booting"] .drop-title,
+.dropzone[data-state="busy"] .drop-title { color: var(--text-muted); }
+.dropzone[data-state="busy"] { cursor: progress; }
+.dropzone[data-state="busy"] .drop-icon { animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.35; } }
+
+.howto { margin-top: 1rem; font-size: var(--step-0); color: var(--text-muted); }
+.howto summary { cursor: pointer; width: fit-content; padding: 0.25rem 0; }
+.howto summary:hover { color: var(--text); }
+.howto ol { margin: 0.5rem 0 0; padding-left: 1.4rem; }
+.howto li + li { margin-top: 0.3rem; }
+
+/* 7. Result -------------------------------------------------------------- */
+.result { display: grid; gap: 2rem; padding-block: 2.5rem 3.5rem; border-top: 1px solid var(--rule); }
+.result-panel h2 { font-size: var(--step-4); outline-offset: 6px; }
+.counts { margin-top: 0.5rem; color: var(--text-muted); }
+
+.spectrum { display: flex; height: 2rem; margin-top: 1.5rem; border-radius: 6px; overflow: hidden; background: var(--rule); }
+.spectrum span { height: 100%; transform-origin: left; }
+.spectrum.is-growing span { animation: grow 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.spectrum.is-growing span:nth-child(2) { animation-delay: 0.06s; }
+.spectrum.is-growing span:nth-child(3) { animation-delay: 0.12s; }
+.spectrum.is-growing span:nth-child(4) { animation-delay: 0.18s; }
+.spectrum.is-growing span:nth-child(5) { animation-delay: 0.24s; }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; list-style: none; margin: 0.75rem 0 0; padding: 0; font-size: var(--step-0); }
+.legend li { display: inline-flex; align-items: center; gap: 0.45rem; }
+.legend .swatch { width: 0.9rem; height: 0.9rem; border-radius: 3px; }
+.legend b { font-weight: 700; }
+.fine { margin-top: 0.75rem; color: var(--text-muted); font-size: var(--step--1); }
+.fine:empty { display: none; }
+.notice { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; background: var(--notice-bg); font-size: var(--step-0); }
+
+.options { display: grid; gap: 1.25rem; margin-top: 2rem; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+legend { padding: 0; margin-bottom: 0.5rem; font-weight: 700; font-size: var(--step-0); }
+.segmented { display: flex; flex-direction: column; border: 1px solid var(--border-strong); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+.segmented input { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+.segmented label {
+  padding: 0.7rem 1rem; cursor: pointer; font-size: var(--step-0); user-select: none;
+  border-bottom: 1px solid var(--rule);
+}
+.segmented label:last-of-type { border-bottom: 0; }
+.segmented label:hover { background: var(--accent-soft); }
+.segmented input:checked + label { background: var(--selected-bg); color: var(--selected-text); font-weight: 700; }
+.segmented input:focus-visible + label { outline: 3px solid var(--focus); outline-offset: -3px; }
+.segmented input:disabled + label { opacity: 0.45; cursor: not-allowed; background: transparent; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+.filename { margin-top: 0.6rem; font-size: var(--step--1); color: var(--text-muted); overflow-wrap: anywhere; }
+.link-button {
+  margin-top: 1.25rem; padding: 0.25rem 0; border: 0; background: none; cursor: pointer;
+  font: inherit; font-size: var(--step-0); color: var(--text-muted);
+  text-decoration: underline; text-underline-offset: 0.2em;
+}
+.link-button:hover { color: var(--text); }
+
+/* 8. Preview (read-only) -------------------------------------------------- */
+.preview-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem; margin-bottom: 0.75rem; }
+.preview-head h3 { font-size: var(--step-3); }
+.preview-meta { font-size: var(--step--1); color: var(--text-muted); }
+.preview-box {
+  margin: 0;
+  height: 32rem;
+  overflow: auto;
+  padding: 1.25rem 1.25rem 2rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface-sunk);
+  color: var(--text);
+  font: 0.8125rem/1.65 var(--mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 4;
+  user-select: text;
+}
+.preview-box.is-stale { opacity: 0.55; }
+
+/* How it works ------------------------------------------------------------ */
+.how { padding-block: 3rem 4rem; border-top: 1px solid var(--rule); scroll-margin-top: 1rem; }
+.how > h2 { font-size: var(--step-4); }
+.how-lede { margin-top: 0.75rem; color: var(--text-muted); max-width: 40em; }
+.how-grid { display: grid; gap: 1.25rem; margin-top: 2rem; }
+.how-block { padding: 1.5rem; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); }
+.how-block h3 { font-size: var(--step-2); margin-bottom: 0.9rem; }
+.how-block p { font-size: var(--step-0); max-width: 44em; }
+.how-wide { margin-top: 1.25rem; }
+.how-steps { margin: 0; padding-left: 1.4rem; font-size: var(--step-0); display: grid; gap: 0.6rem; }
+.how-steps strong { font-weight: 700; }
+.how-note { margin-top: 1rem; color: var(--text-muted); }
+.kept-table { width: 100%; border-collapse: collapse; font-size: var(--step-0); }
+.kept-table th { text-align: left; font-weight: 700; padding: 0 0.75rem 0.5rem 0; border-bottom: 1px solid var(--border-strong); }
+.kept-table td { padding: 0.5rem 0.75rem 0.5rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.kept-table td:last-child { color: var(--text-muted); }
+.before-after { display: grid; gap: 1rem; margin-top: 1.25rem; }
+.before-after figure { margin: 0; min-width: 0; }
+.before-after figcaption { font-size: var(--step--1); font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem; }
+.code-sample {
+  margin: 0; padding: 1rem; overflow-x: auto;
+  border: 1px solid var(--rule); border-radius: 8px; background: var(--surface-sunk);
+  font: 0.8125rem/1.6 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere;
+}
+
+/* 9. Buttons ------------------------------------------------------------- */
+.button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 2.875rem; padding: 0.65rem 1.25rem;
+  border: 1px solid var(--btn-bg); border-radius: var(--radius);
+  font: 700 var(--step-0) / 1.2 var(--sans); cursor: pointer; text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.button-primary { background: var(--btn-bg); color: var(--btn-text); }
+.button-primary:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
+.button-secondary { background: transparent; color: var(--text); border-color: var(--border-strong); }
+.button-secondary:hover { background: var(--accent-soft); }
+.button:disabled { opacity: 0.5; cursor: not-allowed; }
+.dropzone[data-state="busy"] .button:disabled { cursor: progress; }
+
+/* 10. States ------------------------------------------------------------- */
+.alert { margin-top: 1rem; padding: 0.85rem 1rem; border-radius: 8px; font-size: var(--step-0); }
+.alert-error { background: var(--error-bg); color: var(--error); font-weight: 700; border-left: 4px solid var(--error); }
+.app-error { padding-block: 2.5rem 3.5rem; }
+.app-error-box { max-width: 40rem; padding: 1.5rem; border-radius: var(--radius); background: var(--error-bg); border-left: 4px solid var(--error); }
+.app-error-box h2 { font-size: var(--step-3); color: var(--error); }
+.app-error-box p { margin: 0.75rem 0 1.25rem; }
+
+/* 11. Footer + 404 -------------------------------------------------------- */
+.site-footer { border-top: 1px solid var(--rule); color: var(--text-muted); font-size: var(--step--1); }
+.footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; padding-block: 1.5rem; }
+
+.not-found { padding-block: 4rem 5rem; max-width: 44rem; }
+.not-found .code { font-family: var(--display); font-size: var(--step-5); color: var(--border-strong); line-height: 1; }
+.not-found h1 { margin-top: 1rem; font-size: clamp(2.25rem, 1.8rem + 2vw, var(--step-5)); }
+.not-found p { margin-top: 1rem; color: var(--text-muted); max-width: 34em; }
+.not-found .actions { margin-top: 2rem; }
+
+/* Tablet: 640px and up ---------------------------------------------------- */
+@media (min-width: 40em) {
+  :root { --gutter: 2rem; }
+  .brand { font-size: var(--step-2); }
+  .hero { padding-block: 3.5rem 4rem; }
+  .segmented { display: inline-flex; flex-direction: row; flex-wrap: wrap; }
+  .segmented label { border-bottom: 0; border-right: 1px solid var(--rule); }
+  .segmented label:last-of-type { border-right: 0; }
+  .options { grid-template-columns: auto 1fr; align-items: start; column-gap: 2rem; }
+  .how-block { padding: 1.75rem 2rem; }
+}
+
+/* Desktop: 1024px and up -------------------------------------------------- */
+@media (min-width: 64em) {
+  .hero { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; gap: 4rem; padding-block: 4.5rem 5rem; }
+  .dropzone { min-height: 24rem; }
+  .result { grid-template-columns: minmax(20rem, 24rem) minmax(0, 1fr); gap: 3.5rem; align-items: start; }
+  .result-panel { position: sticky; top: 1.5rem; }
+  .options { grid-template-columns: 1fr; }
+  .preview-box { height: calc(100vh - 9rem); min-height: 28rem; }
+  .how-grid { grid-template-columns: 1fr 1fr; }
+  .before-after { grid-template-columns: 3fr 2fr; align-items: start; }
+}
+
+/* Large screens: 1440px and up --------------------------------------------- */
+@media (min-width: 90em) {
+  :root { --max: 84rem; }
+  body { font-size: 1.1875rem; }
+  .hero { gap: 6rem; }
+  .hero-copy h1 { font-size: 4.25rem; }
+  .result { grid-template-columns: minmax(22rem, 26rem) minmax(0, 1fr); }
+  .preview-box { font-size: 0.875rem; }
+}
+
+/* Motion: only when the reader allows it. -------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+@media print {
+  .site-header, .site-footer, .upload, .options, .actions, .link-button { display: none !important; }
+  .preview-box { height: auto; overflow: visible; border: 0; }
+}

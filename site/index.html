@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Play Books Notes to Markdown: organize your highlights</title>
+  <meta name="description" content="Turn your Google Play Books notes export into clean Markdown. Group highlights by chapter or color, keep your comments, and download a tidy .md file. Runs in your browser.">
+  <link rel="canonical" href="https://destroyer-droid.github.io/playbooks-notes/">
+  <meta name="robots" content="index, follow">
+
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#EDE9E6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#321E48" media="(prefers-color-scheme: dark)">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Play Books Notes">
+  <meta property="og:title" content="Play Books Notes to Markdown">
+  <meta property="og:description" content="Your Google Play Books highlights and comments as clean Markdown, grouped by chapter or color.">
+  <meta property="og:url" content="https://destroyer-droid.github.io/playbooks-notes/">
+  <meta property="og:image" content="https://destroyer-droid.github.io/playbooks-notes/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Play Books Notes: Play Books highlights turned into clean Markdown grouped by chapter.">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="preload" href="fonts/google-sans-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/belgrano-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/theme-init.js"></script>
+  <script type="module" src="js/app.js"></script>
+  <link rel="modulepreload" href="js/ui/dom.js">
+  <link rel="modulepreload" href="js/ui/error-boundary.js">
+  <link rel="modulepreload" href="js/ui/nav.js">
+  <link rel="modulepreload" href="js/ui/result.js">
+  <link rel="modulepreload" href="js/ui/theme.js">
+  <link rel="modulepreload" href="js/ui/upload.js">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./" aria-current="page">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false">
+          <rect width="32" height="32" rx="7" class="brand-tile"/>
+          <rect x="7" y="7.5" width="18" height="3.2" rx="1.2" fill="#FBC02D"/>
+          <rect x="7" y="12.5" width="13" height="3.2" rx="1.2" fill="#8BC34A"/>
+          <rect x="7" y="17.5" width="16" height="3.2" rx="1.2" fill="#26C6DA"/>
+          <rect x="7" y="22.5" width="9" height="3.2" rx="1.2" fill="#FF7043"/>
+        </svg>
+        <span class="brand-text">Play Books Notes</span>
+      </a>
+      <nav aria-label="Site">
+        <ul class="nav-list">
+          <li><a class="nav-link" href="#how-it-works" id="nav-how">How it works</a></li>
+          <li>
+            <a class="nav-link nav-coffee" href="https://buymeacoffee.com/immanuelvivek" target="_blank" rel="noopener noreferrer">
+              <svg class="icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M17 10.5h1.5a2.5 2.5 0 0 1 0 5H16.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 3.5c-.6.8-.6 1.7 0 2.5M11.5 3.5c-.6.8-.6 1.7 0 2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <span class="nav-coffee-text">Buy me a coffee</span><span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          </li>
+          <li>
+            <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme">
+              <svg class="icon icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              <svg class="icon icon-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <h1 id="page-title">Your Play Books highlights, as clean Markdown</h1>
+        <p class="lede">Google Play Books saves your notes as a cluttered Google Doc. Drop its Markdown export here and get back only what you marked: the highlighted passages and your comments, grouped by chapter or by highlight color.</p>
+        <ol class="steps" aria-label="In three steps">
+          <li><strong>Drop the export.</strong> The .md file Google Docs downloads for your book's notes.</li>
+          <li><strong>Pick a layout.</strong> By chapter, by color, or color then chapter; bullets or quotes.</li>
+          <li><strong>Download.</strong> A tidy <code>Book title - Notes.md</code>, ready for Obsidian or any notes app.</li>
+        </ol>
+      </div>
+
+      <div class="upload">
+        <div class="dropzone" id="dropzone" data-state="booting" aria-busy="true">
+          <svg class="drop-icon" viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" focusable="false">
+            <path d="M13 5h15l9 9v27a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M28 5v9h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M17 24h14M17 29h10M17 34h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <p class="drop-title" id="drop-title">Drag your notes export here</p>
+          <p class="drop-or" id="drop-or">or</p>
+          <button type="button" class="button button-primary" id="choose" disabled aria-describedby="drop-hint">Choose a Markdown file</button>
+          <input type="file" id="file-input" class="visually-hidden" accept=".md,.markdown,text/markdown" tabindex="-1" aria-hidden="true">
+          <p class="drop-hint" id="drop-hint">The .md file from Google Docs, up to 10 MB. It is read in your browser and never uploaded.</p>
+          <noscript><p class="alert alert-error">This tool needs JavaScript to read your file. Turn it on and reload the page.</p></noscript>
+        </div>
+
+        <div class="alert alert-error" id="upload-alert" role="alert" hidden></div>
+
+        <details class="howto">
+          <summary>Where do I get this file?</summary>
+          <ol>
+            <li>In Play Books, open the book's notes settings and turn on saving notes to Google Drive.</li>
+            <li>In Google Drive, open the doc named “Notes from <em>book title</em>”.</li>
+            <li>In Google Docs, choose File, then Download, then Markdown (.md).</li>
+          </ol>
+        </details>
+      </div>
+    </section>
+
+    <section class="result wrap" id="result" aria-labelledby="book-title" hidden>
+      <div class="result-panel">
+        <h2 id="book-title" tabindex="-1"></h2>
+        <p class="counts" id="counts"></p>
+
+        <div class="spectrum" id="spectrum" role="img"></div>
+        <ul class="legend" id="legend"></ul>
+        <p class="fine" id="cleanup"></p>
+        <p class="notice" id="color-notice" role="status" hidden>Notes found, but their highlight colors couldn't be read, so grouping by color is turned off.</p>
+
+        <form class="options" id="options">
+          <fieldset>
+            <legend>Group notes by</legend>
+            <div class="segmented">
+              <input type="radio" name="group_by" id="g-chapter" value="chapter" checked>
+              <label for="g-chapter">Chapter</label>
+              <input type="radio" name="group_by" id="g-color" value="color">
+              <label for="g-color">Color</label>
+              <input type="radio" name="group_by" id="g-both" value="both">
+              <label for="g-both">Color, then chapter</label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Show each note as</legend>
+            <div class="segmented">
+              <input type="radio" name="style" id="s-bullet" value="bullet" checked>
+              <label for="s-bullet">Bullet points</label>
+              <input type="radio" name="style" id="s-quote" value="quote">
+              <label for="s-quote">Quote blocks</label>
+            </div>
+          </fieldset>
+        </form>
+
+        <div class="actions">
+          <button type="button" class="button button-primary" id="download">Download Markdown</button>
+          <button type="button" class="button button-secondary" id="copy">Copy Markdown</button>
+        </div>
+        <p class="filename" id="filename"></p>
+        <button type="button" class="link-button" id="reset">Convert another file</button>
+      </div>
+
+      <div class="preview">
+        <div class="preview-head">
+          <h3 id="preview-title">Preview</h3>
+          <p class="preview-meta" id="preview-meta"></p>
+        </div>
+        <pre class="preview-box" id="preview" role="region" tabindex="0" aria-labelledby="preview-title" aria-describedby="preview-meta"></pre>
+      </div>
+    </section>
+
+    <section class="how wrap" id="how-it-works" aria-labelledby="how-title">
+      <h2 id="how-title">How it works</h2>
+      <p class="how-lede">Play Books keeps every note in a Google Doc in your Drive. This page reads that doc's Markdown download, keeps only what you wrote and marked, and tidies the rough edges of the export.</p>
+
+      <div class="how-grid">
+        <article class="how-block" aria-labelledby="how-get">
+          <h3 id="how-get">Get the export</h3>
+          <ol class="how-steps">
+            <li>In the Play Books app, open the book's menu, go to <strong>Notes settings</strong> and turn on saving notes, highlights and bookmarks to Google Drive.</li>
+            <li>Wait a minute for it to sync. Drive gets a folder called <strong>Play Books Notes</strong> with a doc named “Notes from <em>book title</em>”.</li>
+            <li>Open the doc, then choose <strong>File</strong>, <strong>Download</strong>, <strong>Markdown (.md)</strong>.</li>
+            <li>Drop that file in the box above, or choose it with the button.</li>
+          </ol>
+        </article>
+
+        <article class="how-block" aria-labelledby="how-kept">
+          <h3 id="how-kept">What you get back</h3>
+          <table class="kept-table">
+            <caption class="visually-hidden">What is kept from the export and what is dropped</caption>
+            <thead>
+              <tr><th scope="col">Kept</th><th scope="col">Dropped</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Highlighted text</td><td>Dates</td></tr>
+              <tr><td>Your comments</td><td>Page numbers and links</td></tr>
+              <tr><td>Chapter names, in book order</td><td>Cover, color swatches, sync banner</td></tr>
+              <tr><td>Highlight colors, for grouping</td><td>Bookmarks with no text</td></tr>
+            </tbody>
+          </table>
+          <p class="how-note">Group by chapter, by color, or by color and then chapter. Show each note as a bullet or a quote. The book title is the file's only H1.</p>
+        </article>
+      </div>
+
+      <article class="how-block how-wide" aria-labelledby="how-tidy">
+        <h3 id="how-tidy">What gets tidied</h3>
+        <p>When a highlight runs across a column or page break, Play Books stores it as two notes. They are joined back together when they share a chapter, color and date and the first stops mid-sentence. A passage highlighted twice is kept once, and the export's backslash escapes are removed.</p>
+        <div class="before-after">
+          <figure>
+            <figcaption>In the export</figcaption>
+            <pre class="code-sample" tabindex="0">|  ![][image3] *We require others’ input to overcome the* May 1, 2021 [40](http://play.google.com/…)  |
+| ----- |
+
+|  ![][image3] *availability bias.* May 1, 2021 [40](http://play.google.com/…)  |
+| ----- |</pre>
+          </figure>
+          <figure>
+            <figcaption>In your file</figcaption>
+            <pre class="code-sample" tabindex="0">- We require others’ input to overcome the availability bias.</pre>
+          </figure>
+        </div>
+      </article>
+
+      <article class="how-block how-wide" aria-labelledby="how-private">
+        <h3 id="how-private">Your notes stay on your device</h3>
+        <p>The file is read by your browser and converted there. Nothing is uploaded, stored or tracked. The only thing it remembers is your light or dark theme choice.</p>
+      </article>
+    </section>
+
+    <section class="app-error wrap" id="app-error" aria-labelledby="app-error-title" hidden>
+      <div class="app-error-box" role="alert">
+        <h2 id="app-error-title">Something went wrong on this page</h2>
+        <p>Your file never left your device, so nothing was lost. Reload the page and try again. If it keeps happening, please report it on GitHub with the steps that led here.</p>
+        <button type="button" class="button button-primary" id="reload">Reload the page</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>Files are read in your browser and never uploaded. Not affiliated with Google.</p>
+      <p><a href="https://github.com/DeStRoYeR-droid/playbooks-notes">Source code on GitHub</a></p>
+    </div>
+  </footer>
+
+  <p class="visually-hidden" id="announcer" aria-live="polite" aria-atomic="true"></p>
+</body>
+</html>

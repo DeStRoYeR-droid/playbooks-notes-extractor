@@ -1,0 +1,8 @@
+# Play Books Notes
+# Crawlers only read robots.txt at a domain root. On a GitHub *project* site this
+# file lives at /playbooks-notes/robots.txt and is advisory; it takes full effect if
+# the site moves to a user site (destroyer-droid.github.io) or a custom domain.
+User-agent: *
+Allow: /
+
+Sitemap: https://destroyer-droid.github.io/playbooks-notes/sitemap.xml
