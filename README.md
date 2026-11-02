@@ -3,7 +3,7 @@
 Turn a Google Play Books notes export into clean Markdown: only your highlighted passages and
 your own comments, grouped by chapter, by highlight color, or by color then chapter.
 
-**Live site:** https://destroyer-droid.github.io/playbooks-notes/
+**Live site:** https://destroyer-droid.github.io/playbooks-notes-extractor/
 
 Drop the `.md` file that Google Docs downloads for a book's notes, pick a layout, and download
 `<Book title> - Notes.md`. Everything runs in the browser; the file is never uploaded.
